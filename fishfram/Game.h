@@ -10,7 +10,7 @@
 #include <sstream>
 #include <string>
 #include <json.hpp>
-#include "Animation.h"
+#include "Fish.h"
 
 /*
 	Class for Game Engine.
@@ -45,8 +45,7 @@ private:
 	//Fish
 		//fish1
 	sf::Texture fishTexture;
-	Animation fishAnimation;
-	sf::RectangleShape fishShape;
+	Fish fish1;
 
 	//Private functions.
 	void initVars();

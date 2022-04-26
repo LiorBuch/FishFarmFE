@@ -19,13 +19,7 @@ void Game::initWindow()
 void Game::initFish()
 {
 	this->fishTexture.loadFromFile("assets/goldfish.png");
-	Animation temp(&fishTexture, sf::Vector2u(16, 1), 0.2f);
-	this->fishAnimation = temp;
-	this->fishShape.setSize(sf::Vector2f(470.f, 280.f));
-	this->fishShape.setPosition(100.f, 100.f);
-	this->fishShape.setScale(sf::Vector2f(0.5f, 0.5f));
-	this->fishShape.setTexture(&fishTexture);
-
+	this->fish1 = { &fishTexture, sf::Vector2u(16, 1), 0.2f,300.0f };
 }
 void Game::initTank()
 {
@@ -70,8 +64,7 @@ void Game::update()
 	this->pollEvents();
 
 	this->deltaTime = this->clock.restart().asSeconds();
-	this->fishAnimation.update(0,this->deltaTime);
-	this->fishShape.setTextureRect(this->fishAnimation.uvRect);
+	this->fish1.update(deltaTime);
 }
 void Game::render() 
 {
@@ -80,7 +73,7 @@ void Game::render()
 	this->window->draw(this->tankWallpaper);
 	this->window->draw(this->gravel);
 	this->window->draw(this->toolBar);
-	this->window->draw(this->fishShape);
+	this->fish1.draw(*window);
 
 	//Draw Game
 	this->window->display();

@@ -19,7 +19,7 @@ Animation::~Animation()
 {
 }
 
-void Animation::update(int row, float deltaTime)
+void Animation::update(int row, float deltaTime, bool faceLeft)
 {
 	this->currentImage.y = row;
 	this->totalTime += deltaTime;
@@ -35,6 +35,15 @@ void Animation::update(int row, float deltaTime)
 		}
 	}
 
-	uvRect.left = currentImage.x * uvRect.width;
 	uvRect.top = currentImage.y * uvRect.height;
+	if (faceLeft)
+	{
+		uvRect.width = abs(uvRect.width);
+		uvRect.left = currentImage.x * uvRect.width;
+	}
+	else
+	{
+		uvRect.left = (currentImage.x+1) * abs(uvRect.width);
+		uvRect.width = -abs(uvRect.width);
+	}
 }
