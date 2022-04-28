@@ -5,7 +5,8 @@ Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switch
 	this->imageCount = imageCount;
 	this->switchTime = switchTime;
 	currentImage.x = 0;
-
+	this->flipImage.x = 0;
+	this->flipSwitch = switchTime / 6.f;
 	uvRect.width = texture->getSize().x / float(imageCount.x);
 	uvRect.height = texture->getSize().y / float(imageCount.y);
 	this->totalTime = 0;
@@ -44,6 +45,37 @@ void Animation::update(int row, float deltaTime, bool faceLeft)
 	else
 	{
 		uvRect.left = (currentImage.x+1) * abs(uvRect.width);
+		uvRect.width = -abs(uvRect.width);
+	}
+}
+
+void Animation::flipAnim(unsigned int& row, float deltaTime, bool faceLeft, bool& flip)
+{
+	this->currentImage.y = row;
+	this->totalTime += deltaTime;
+
+	if (totalTime >= flipSwitch)
+	{
+		totalTime -= flipSwitch;
+		flipImage.x++;
+
+		if (flipImage.x >= imageCount.x)
+		{
+			flipImage.x = 0;
+			flip = false;
+			row = 0;
+		}
+	}
+
+	uvRect.top = currentImage.y * uvRect.height;
+	if (faceLeft)
+	{
+		uvRect.width = abs(uvRect.width);
+		uvRect.left = currentImage.x * uvRect.width;
+	}
+	else
+	{
+		uvRect.left = (currentImage.x + 1) * abs(uvRect.width);
 		uvRect.width = -abs(uvRect.width);
 	}
 }

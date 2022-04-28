@@ -10,7 +10,7 @@
 class Fish
 {
 public:
-	Fish(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed);
+	Fish(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float xPos, float yPos, float sizeWidth, float sizeHeight);
 	Fish();
 	~Fish();
 
@@ -19,14 +19,20 @@ public:
 
 private:
 	sf::RectangleShape body;
+	sf::Clock cooldown;
 	Animation animation;
 	unsigned int row;
 	float speed;
 	float speedAMP;
+	float speedYAMP;
 	bool faceLeft;
+	int faceUp;
+	bool flip;
+	float switchTime;
 
-	void switchDirections(float pos);
+	void switchDirections(sf::Vector2f pos, float deltaTime);
 	void randomAMP();
+	void randomAngel();
 
 };
 

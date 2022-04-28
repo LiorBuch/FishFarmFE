@@ -44,8 +44,8 @@ private:
 
 	//Fish
 		//fish1
-	sf::Texture fishTexture;
-	Fish fish1;
+	sf::Texture sardineTexture;
+	Fish sardine;
 
 	//Private functions.
 	void initVars();

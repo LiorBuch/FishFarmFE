@@ -18,8 +18,8 @@ void Game::initWindow()
 }
 void Game::initFish()
 {
-	this->fishTexture.loadFromFile("assets/goldfish.png");
-	this->fish1 = { &fishTexture, sf::Vector2u(16, 1), 0.2f,300.0f };
+	this->sardineTexture.loadFromFile("assets/sardinefish.png");
+	this->sardine = { &sardineTexture, sf::Vector2u(30, 3), 0.1f,300.0f,500.f,500.f , 479.f, 161.f };
 }
 void Game::initTank()
 {
@@ -64,7 +64,7 @@ void Game::update()
 	this->pollEvents();
 
 	this->deltaTime = this->clock.restart().asSeconds();
-	this->fish1.update(deltaTime);
+	this->sardine.update(deltaTime);
 }
 void Game::render() 
 {
@@ -73,7 +73,7 @@ void Game::render()
 	this->window->draw(this->tankWallpaper);
 	this->window->draw(this->gravel);
 	this->window->draw(this->toolBar);
-	this->fish1.draw(*window);
+	this->sardine.draw(*window);
 
 	//Draw Game
 	this->window->display();

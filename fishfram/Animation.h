@@ -14,13 +14,15 @@ public:
 	~Animation();
 
 	void update(int row, float deltaTime, bool faceRight);
+	void flipAnim(unsigned int& row, float deltaTime, bool faceLeft, bool& flip);
 
 	sf::IntRect uvRect;
 
 private:
 	sf::Vector2u imageCount;
 	sf::Vector2u currentImage;
-
+	sf::Vector2u flipImage;
+	float flipSwitch;
 	float totalTime;
 	float switchTime;
 };
