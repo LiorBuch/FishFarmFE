@@ -10,7 +10,7 @@
 class Fish
 {
 public:
-	Fish(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float xPos, float yPos, float sizeWidth, float sizeHeight);
+	Fish(string texturePath, sf::Vector2u imageCount, float switchTime, float speed, float xPos, float yPos, float sizeWidth, float sizeHeight,unsigned int num);
 	Fish();
 	~Fish();
 
@@ -20,6 +20,7 @@ public:
 private:
 	sf::RectangleShape body;
 	sf::Clock cooldown;
+	sf::Texture fishTexture;
 	Animation animation;
 	unsigned int row;
 	float speed;

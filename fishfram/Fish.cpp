@@ -1,9 +1,10 @@
 #include "Fish.h"
 using namespace std;
 
-Fish::Fish(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed,float xPos,float yPos,float sizeWidth, float sizeHeight) :
-	animation(texture,imageCount,switchTime)
+Fish::Fish(string texturePath, sf::Vector2u imageCount, float switchTime, float speed,float xPos,float yPos,float sizeWidth, float sizeHeight, unsigned int num) :
+	animation(texturePath,imageCount,switchTime)
 {
+	this->fishTexture.loadFromFile("assets/" + texturePath);
 	this->speed = speed;
 	this->speedAMP = 1.f;
 	this->speedYAMP = 1.f;
@@ -15,7 +16,7 @@ Fish::Fish(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, floa
 	body.setSize(sf::Vector2f(sizeWidth,sizeHeight));
 	body.setPosition(xPos, yPos);
 	body.setScale(sf::Vector2f(0.5f, 0.5f));
-	body.setTexture(texture);
+	body.setTexture(&fishTexture);
 	this->body.setOrigin(20.f, 20.f);
 	this->cooldown.getElapsedTime().asSeconds() + 2;
 }

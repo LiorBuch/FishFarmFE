@@ -1,14 +1,15 @@
 #include "Animation.h"
 
-Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime)
+Animation::Animation(string texturePath, sf::Vector2u imageCount, float switchTime)
 {
+	this->texture.loadFromFile("assets/" + texturePath);
 	this->imageCount = imageCount;
 	this->switchTime = switchTime;
 	currentImage.x = 0;
 	this->flipImage.x = 0;
 	this->flipSwitch = switchTime / 6.f;
-	uvRect.width = texture->getSize().x / float(imageCount.x);
-	uvRect.height = texture->getSize().y / float(imageCount.y);
+	uvRect.width =  this->texture.getSize().x / float(imageCount.x);
+	uvRect.height = this->texture.getSize().y / float(imageCount.y);
 	this->totalTime = 0;
 }
 

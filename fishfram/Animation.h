@@ -5,11 +5,13 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <iostream>
+#include <string>
+using namespace std;
 
 class Animation
 {
 public:
-	Animation(sf::Texture* texture,sf::Vector2u imageCount , float switchTime);
+	Animation(string texturePath,sf::Vector2u imageCount , float switchTime);
 	Animation();
 	~Animation();
 
@@ -19,6 +21,7 @@ public:
 	sf::IntRect uvRect;
 
 private:
+	sf::Texture texture;
 	sf::Vector2u imageCount;
 	sf::Vector2u currentImage;
 	sf::Vector2u flipImage;

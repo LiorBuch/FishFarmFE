@@ -7,6 +7,10 @@ void Game::initVars()
 	this->window = nullptr;
 	this->http.setHost("http://localhost",8000);
 	this->deltaTime = 0.f;
+	//this->currentPlayer.loadPlayer();
+}
+void Game::updateCuesor()
+{
 }
 void Game::initWindow()
 {
@@ -15,11 +19,12 @@ void Game::initWindow()
 	//get desktop mode for user res.
 	this->window = new sf::RenderWindow(this->videoMode, "Fish Farm", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
 	this->window->setFramerateLimit(60);
+	this->mouseCursor.loadFromFile("assets/cursor1.png");
+	this->cursor.setTexture(this->mouseCursor);
+	this->window->setMouseCursorVisible(false);
 }
 void Game::initFish()
 {
-	this->sardineTexture.loadFromFile("assets/sardinefish.png");
-	this->sardine = { &sardineTexture, sf::Vector2u(30, 3), 0.1f,300.0f,500.f,500.f , 479.f, 161.f };
 }
 void Game::initTank()
 {
@@ -27,14 +32,7 @@ void Game::initTank()
 	sf::Http::Response response = http.sendRequest(request);
 	std::string str = response.getBody();
 	this->json = nlohmann::json::parse(str.substr(1, str.length() - 2));
-
-	this->wallPaperTexture.loadFromFile("assets/"+ json["wallpaper"].get<std::string>());
-	this->tankWallpaper.setTexture(wallPaperTexture);
-	this->toolBarTexture.loadFromFile("assets/toolbartexture.png");
-	this->toolBar.setTexture(toolBarTexture);
-	this->toolBar.setPosition(sf::Vector2f(1224.f, 659.f));
-	this->gravelTexture.loadFromFile("assets/"+json["gravel"].get<std::string>());
-	this->gravel.setTexture(gravelTexture);
+	new(&currentTank) Tank(json["numberOfDecorations"].get<int>(), json["numberOfFish"].get<int>(), json, deltaTime);
 }
 
 
@@ -62,18 +60,19 @@ const bool Game::running() const
 void Game::update()
 {
 	this->pollEvents();
-
+	this->currentTank.update(this->deltaTime);
 	this->deltaTime = this->clock.restart().asSeconds();
-	this->sardine.update(deltaTime);
+	this->cursor.setPosition(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+	
+
 }
 void Game::render() 
 {
 	this->window->clear(sf::Color::Black);
 	// Renders the game Objects
-	this->window->draw(this->tankWallpaper);
-	this->window->draw(this->gravel);
 	this->window->draw(this->toolBar);
-	this->sardine.draw(*window);
+	currentTank.draw(*window);
+	this->window->draw(this->cursor);
 
 	//Draw Game
 	this->window->display();

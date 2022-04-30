@@ -11,6 +11,8 @@
 #include <string>
 #include <json.hpp>
 #include "Fish.h"
+#include "Tank.h"
+#include "Player.h"
 
 /*
 	Class for Game Engine.
@@ -25,33 +27,28 @@ private:
 	nlohmann::json json;
 	sf::Clock clock;
 	float deltaTime;
+	//Player currentPlayer;
 	//Window.
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 	sf::Event event;
+	Tank currentTank;
 	//Game OBJ
 	
 	//Tank Properties
-		//wallpaper
-	sf::Texture wallPaperTexture;
-	sf::Sprite tankWallpaper;
 		//toolbar
 	sf::Texture toolBarTexture;
 	sf::Sprite toolBar;
-		//gravel
-	sf::Texture gravelTexture;
-	sf::Sprite gravel;
-
-	//Fish
-		//fish1
-	sf::Texture sardineTexture;
-	Fish sardine;
+		//cursor
+	sf::Texture mouseCursor;
+	sf::Sprite cursor;
 
 	//Private functions.
 	void initVars();
 	void initWindow();
 	void initFish();
 	void initTank();
+	void updateCuesor();
 
 
 public:
