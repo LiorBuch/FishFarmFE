@@ -7,6 +7,9 @@ void Game::initVars()
 	this->window = nullptr;
 	this->http.setHost("http://localhost",8000);
 	this->deltaTime = 0.f;
+	this->toolBarTexture.loadFromFile("assets/toolbartexture.png");
+	this->toolBar.setTexture(toolBarTexture);
+	this->toolBar.setPosition(1217,653);
 	//this->currentPlayer.loadPlayer();
 }
 void Game::updateCuesor()
@@ -70,8 +73,8 @@ void Game::render()
 {
 	this->window->clear(sf::Color::Black);
 	// Renders the game Objects
-	this->window->draw(this->toolBar);
 	currentTank.draw(*window);
+	this->window->draw(this->toolBar);
 	this->window->draw(this->cursor);
 
 	//Draw Game
