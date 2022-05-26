@@ -7,6 +7,7 @@
 class Player
 {
 public:
+	Player();
 	Player(std::string playerTOKEN);
 	~Player();
 	void loadPlayer();

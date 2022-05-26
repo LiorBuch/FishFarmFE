@@ -1,5 +1,9 @@
 #include "Player.h"
 
+Player::Player()
+{
+}
+
 Player::Player(std::string playerTOKEN)
 {
 	this->TOKEN = playerTOKEN;

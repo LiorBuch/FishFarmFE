@@ -10,11 +10,32 @@ void Game::initVars()
 	this->toolBarTexture.loadFromFile("assets/toolbartexture.png");
 	this->toolBar.setTexture(toolBarTexture);
 	this->toolBar.setPosition(1217,653);
+	this->defaultButtonTexture.loadFromFile("assets/defaultCursorIdle.png");
+	this->foodButtonTexture.loadFromFile("assets/FoodIdle.png");
+	new(&foodButton) Button(1269.f, 661.f,42.f,48.f,this->foodButtonTexture,"assets/FoodHover.png");
+	new(&defaultCursor) Button(1225.f, 661.f,42.f,48.f,this->defaultButtonTexture,"assets/defaultCursorHover.png");
+	this->cursorStatus = "idle";
 	//this->currentPlayer.loadPlayer();
 }
-void Game::updateCuesor()
+
+void Game::updateCursor()
 {
+	if (this->foodButton.isPressed())
+	{
+		this->mouseCursor.loadFromFile("assets/cursor2.png");
+		this->foodButton.resetPress();
+		this->cursorStatus = "food";
+	}
+	if (this->defaultCursor.isPressed())
+	{
+		this->mouseCursor.loadFromFile("assets/cursor1.png");
+		this->defaultCursor.resetPress();
+		this->cursorStatus = "idle";
+	}
 }
+
+
+
 void Game::initWindow()
 {
 	this->videoMode.height = 768;
@@ -31,7 +52,7 @@ void Game::initFish()
 }
 void Game::initTank()
 {
-	sf::Http::Request request("/logi/reqtank/", sf::Http::Request::Get);
+	sf::Http::Request request("/logi/reqtank/"+this->TOKEN+"/", sf::Http::Request::Get);
 	sf::Http::Response response = http.sendRequest(request);
 	std::string str = response.getBody();
 	this->json = nlohmann::json::parse(str.substr(1, str.length() - 2));
@@ -66,6 +87,29 @@ void Game::update()
 	this->currentTank.update(this->deltaTime);
 	this->deltaTime = this->clock.restart().asSeconds();
 	this->cursor.setPosition(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+	this->foodButton.update(sf::Vector2f(sf::Mouse::getPosition(*window)));
+	this->defaultCursor.update(sf::Vector2f(sf::Mouse::getPosition(*window)));
+	updateCursor();
+
+	//cursor usage
+		//food
+	if (this->cursorStatus == "food")
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Mouse::getPosition().y<600)
+		{
+			sf::Vector2f vec(sf::Mouse::getPosition());
+			this->foodList.push_back(shared_ptr<FoodChunk>(new FoodChunk(vec)));
+		}
+	}
+
+	for (shared_ptr<FoodChunk> foodC : this->foodList)
+	{
+		foodC->update();
+		if (foodC->delThis())
+		{
+			delete &foodC;
+		}
+	}
 	
 
 }
@@ -76,6 +120,12 @@ void Game::render()
 	currentTank.draw(*window);
 	this->window->draw(this->toolBar);
 	this->window->draw(this->cursor);
+
+	// Draw Food
+	for (shared_ptr<FoodChunk> foodC : this->foodList)
+	{
+		foodC->draw(*window);
+	}
 
 	//Draw Game
 	this->window->display();

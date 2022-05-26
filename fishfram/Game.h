@@ -13,6 +13,8 @@
 #include "Fish.h"
 #include "Tank.h"
 #include "Player.h"
+#include "Button.h"
+#include "FoodChunk.h"
 
 /*
 	Class for Game Engine.
@@ -23,23 +25,33 @@ class Game
 {
 private:
 	//Vars.
+	string TOKEN = "59704ed4-d6c3-4e21-b69e-0d5865179603";
+
 	sf::Http http;
 	nlohmann::json json;
 	sf::Clock clock;
+	sf::Clock clickCooldown;
 	float deltaTime;
-	//Player currentPlayer;
+	std::list<std::shared_ptr<FoodChunk>> foodList;
+
+	sf::Texture foodButtonTexture;
+	sf::Texture foodButtonTextureHover;
+	Button foodButton;
+	sf::Texture defaultButtonTexture;
+	sf::Texture defaultButtonTextureHover;
+	Button defaultCursor;
+	
+	Player currentPlayer;
 	//Window.
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 	sf::Event event;
 	Tank currentTank;
-	//Game OBJ
-	
-	//Tank Properties
-		//toolbar
+
 	sf::Texture toolBarTexture;
 	sf::Sprite toolBar;
-		//cursor
+	//cursors
+	string cursorStatus;
 	sf::Texture mouseCursor;
 	sf::Sprite cursor;
 
@@ -48,7 +60,7 @@ private:
 	void initWindow();
 	void initFish();
 	void initTank();
-	void updateCuesor();
+	
 
 
 public:
@@ -63,5 +75,6 @@ public:
 	void pollEvents();
 	void update();
 	void render();
+	void updateCursor();
 };
 
